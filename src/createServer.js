@@ -97,7 +97,7 @@ function createServer() {
     const user = users.find((u) => u.id === Number(userId));
 
     if (!user) {
-      return res.status(400).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User not found' });
     }
 
     const expense = {
@@ -129,6 +129,14 @@ function createServer() {
 
     if (!expense) {
       return res.status(404).json({ error: 'Expense not found' });
+    }
+
+    if (req.body.userId !== undefined) {
+      const user = users.find((u) => u.id === Number(req.body.userId));
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
     }
 
     Object.assign(expense, req.body);
